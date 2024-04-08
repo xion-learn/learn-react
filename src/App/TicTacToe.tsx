@@ -1,35 +1,54 @@
 import { useState } from 'react'
 
-function Square({ text, handler }) {
+export default function Game() {
+  const [historyArr, setHistoryArr] = useState([Array(9).fill(null)])
+  const [currentStep, setCurrentStep] = useState(0)
+
+  const squareArr = historyArr[currentStep]
+  const currentSquare = currentStep % 2 === 0 ? 'X' : 'O'
+
+  const handleClick = (i: number) => {
+    if (calculateWinner(squareArr) || squareArr[i]) {
+      return
+    }
+    setCurrentStep(currentStep + 1)
+    const tempArr = [...squareArr]
+    tempArr[i] = currentSquare
+    setHistoryArr([...historyArr.slice(0, currentStep + 1), tempArr])
+  }
+
+  const backtracking = (i) => {
+    setCurrentStep(i)
+  }
+
+  const buttonArr = historyArr.map((history, index) => {
+    const description = index === 0 ? 'Go to game start' : 'Go to move #' + index
+    return (
+      <li key={index}>
+        <button onClick={() => backtracking(index)}>{description}</button>
+      </li>
+    )
+  })
+
   return (
-    <button onClick={handler} className="square">
-      {text}
-    </button>
+    <div className="game">
+      <div className="game-board">
+        <Board squareArr={squareArr} currentSquare={currentSquare} onPlay={handleClick} />
+      </div>
+      <div className="game-info">
+        <ol>{buttonArr}</ol>
+      </div>
+    </div>
   )
 }
 
-export default function Board() {
+function Board({ squareArr, currentSquare, onPlay }) {
   const arr = Array(9).fill(null)
   const domArr = []
   const cache = []
 
-  const [squareArr, setSquareArr] = useState(arr)
-  const [lastSquare, setLastSquare] = useState(null)
-
-  const handleClick = (i) => {
-    if (calculateWinner(squareArr) || squareArr[i]) {
-      return
-    }
-    const tempArr = [...squareArr]
-    const s = lastSquare === 'X' ? 'O' : 'X'
-
-    tempArr[i] = s
-    setLastSquare(s)
-    setSquareArr(tempArr)
-  }
-
   arr.forEach((v, index) => {
-    const el = <Square text={squareArr[index]} handler={() => handleClick(index)}></Square>
+    const el = <Square text={squareArr[index]} handler={() => onPlay(index)}></Square>
     cache.push(el)
 
     if ((index + 1) % 3 === 0) {
@@ -40,13 +59,21 @@ export default function Board() {
 
   console.log(111)
   const winner = calculateWinner(squareArr)
-  let status = winner ? 'Winner: ' + winner : 'Next player: ' + (lastSquare === 'X' ? 'O' : 'X')
+  let status = winner ? 'Winner: ' + winner : 'Next player: ' + currentSquare
 
   return (
-    <>
+    <div>
       <div className="status">{status}</div>
       {domArr}
-    </>
+    </div>
+  )
+}
+
+function Square({ text, handler }) {
+  return (
+    <button onClick={handler} className="square">
+      {text}
+    </button>
   )
 }
 
