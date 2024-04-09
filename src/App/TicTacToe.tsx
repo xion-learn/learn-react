@@ -22,7 +22,8 @@ export default function Game() {
   }
 
   const buttonArr = historyArr.map((history, index) => {
-    const description = index === 0 ? 'Go to game start' : 'Go to move #' + index
+    const description =
+      index === 0 ? 'Go to game start' : 'Go to move #' + index
     return (
       <li key={index}>
         <button onClick={() => backtracking(index)}>{description}</button>
@@ -33,7 +34,11 @@ export default function Game() {
   return (
     <div className="game">
       <div className="game-board">
-        <Board squareArr={squareArr} currentSquare={currentSquare} onPlay={handleClick} />
+        <Board
+          squareArr={squareArr}
+          currentSquare={currentSquare}
+          onPlay={handleClick}
+        />
       </div>
       <div className="game-info">
         <ol>{buttonArr}</ol>
@@ -48,7 +53,9 @@ function Board({ squareArr, currentSquare, onPlay }) {
   const cache = []
 
   arr.forEach((v, index) => {
-    const el = <Square text={squareArr[index]} handler={() => onPlay(index)}></Square>
+    const el = (
+      <Square text={squareArr[index]} handler={() => onPlay(index)}></Square>
+    )
     cache.push(el)
 
     if ((index + 1) % 3 === 0) {
