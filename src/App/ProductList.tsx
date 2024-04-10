@@ -1,7 +1,7 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 
 export default function ProductList() {
-  const [searchBarValue, setSearchBarValue] = useState('')
+  const [searchBarValue, setSearchBarValue] = useState<string | null>('')
   const [checkBoxValue, setCheckBoxValue] = useState(false)
 
   const list = PRODUCTS.filter(
@@ -9,9 +9,13 @@ export default function ProductList() {
       (!checkBoxValue || item.stocked) && item.name.includes(searchBarValue)
   )
 
+  const handleChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchBarValue(e.target.value)
+  }
+
   return (
     <>
-      <SearchBar value={searchBarValue} onValueChange={setSearchBarValue} />
+      <SearchBar value={searchBarValue} onValueChange={handleChanged} />
       <CheckBox value={checkBoxValue} onValueChange={setCheckBoxValue} />
       <List list={list} />
     </>
@@ -19,7 +23,7 @@ export default function ProductList() {
 }
 
 function SearchBar({ value, onValueChange }) {
-  return <input value={value} onChange={(e) => onValueChange(e.target.value)} />
+  return <input value={value} onChange={onValueChange} />
 }
 
 function CheckBox({ value, onValueChange }) {
