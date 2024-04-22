@@ -1,4 +1,4 @@
-function Avatar({width, height = 100}) {
+function Avatar({ width, height = 100 }) {
   return (
     <img
       className="avatar"
@@ -7,21 +7,15 @@ function Avatar({width, height = 100}) {
       width={width}
       height={height}
     />
-  );
+  )
 }
 
 function AvatarWrapper(props) {
-  return (
-    <Avatar {...props} />
-  );
+  return <Avatar {...props} />
 }
 
-function AvatarWrapperBox({children}) {
-  return (
-    <div>
-      {children}
-    </div>
-  )
+function AvatarWrapperBox({ children }) {
+  return <div>{children}</div>
 }
 
 export default function Profile() {
@@ -29,5 +23,5 @@ export default function Profile() {
     <AvatarWrapperBox key={1}>
       <AvatarWrapper width={200} />
     </AvatarWrapperBox>
-  );
+  )
 }
