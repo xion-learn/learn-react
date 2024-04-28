@@ -96,7 +96,7 @@ export async function fetchFilteredInvoices(
   query: string,
   currentPage: number
 ) {
-  noStore()
+  // noStore()
   const offset = (currentPage - 1) * ITEMS_PER_PAGE
 
   try {
@@ -130,7 +130,7 @@ export async function fetchFilteredInvoices(
 
 export async function fetchInvoicesPages(query: string) {
   try {
-    noStore()
+    // noStore()
     const count = await sql`SELECT COUNT(*)
     FROM invoices
     JOIN customers ON invoices.customer_id = customers.id
@@ -152,7 +152,7 @@ export async function fetchInvoicesPages(query: string) {
 
 export async function fetchInvoiceById(id: string) {
   try {
-    noStore()
+    // noStore()
     const data = await sql<InvoiceForm>`
       SELECT
         invoices.id,
@@ -178,7 +178,7 @@ export async function fetchInvoiceById(id: string) {
 
 export async function fetchCustomers() {
   try {
-    noStore()
+    // noStore()
     const data = await sql<CustomerField>`
       SELECT
         id,
